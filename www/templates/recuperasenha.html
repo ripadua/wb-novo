@@ -1,0 +1,47 @@
+<ion-view>
+    <ion-content class="padding">
+        <div id="divRecupera" ng-if="apresentaEmail()">
+            <h3 class="title">Recuperar Senha</h3>
+            <p>Informe o seu endereço de e-mail para enviarmos um código de recuperação de senha.</p>
+            <div class="list">
+                <form name="formRecuperaSenha">
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label positive">E-mail</span>
+                        <input type="email" placeholder="E-mail" name="email" ng-required="true" ng-model="data.email"/>
+                    </label>
+                </form>
+                <button class="button button-block button-positive" ng-click="enviar(formRecuperaSenha)">Enviar Código</button>
+            </div>
+        </div>
+        <div id="divCodigo" ng-if="apresentaCodigo()">
+            <h3 class="title">Código de recuperação</h3>
+            <p>Informe o código de recuperação de senha que foi enviado para o e-mail.</p>
+            <div class="list">
+                <form name="formCodigo">
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label positive">Código de recuperação</span>
+                        <input type="text" placeholder="Código" name="codigo" ng-required="true" ng-model="data.codigo"/>
+                    </label>
+                </form>
+                <button class="button button-block button-positive" ng-click="validarCodigo(formCodigo)">Validar Código</button>
+            </div>
+        </div>
+        <div id="divSenha" ng-if="apresentaSenha()">
+            <h3 class="title">Alterar Senha</h3>
+            <p>Informe a sua nova senha de acesso ao WarningBox.</p>
+            <div class="list">
+                <form name="formSenha">
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label positive">Senha</span>
+                        <input type="password" placeholder="Senha" name="senha" ng-required="true" ng-model="data.senha"/>
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label positive">Repetir a senha</span>
+                        <input type="password" placeholder="Repetir a senha" name="repetirsenha" ng-required="true" ng-model="data.repetirsenha"/>
+                    </label>
+                </form>
+                <button class="button button-block button-positive" ng-click="alterarSenha(formSenha)">Alterar Senha</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

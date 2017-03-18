@@ -1,0 +1,56 @@
+/* Empty. Add your own CSS if you like */
+.wb-logo {
+    width: 75;
+    height: 75;
+}
+
+.slider {
+    height: 90%;
+}
+
+.slider-slide {
+  padding-top: 80px;
+  color: #000;
+  background-color: #fff;
+  text-align: center;
+
+  font-weight: 300;
+}
+
+#logo {
+    margin: 30px 0px;
+}
+
+#list {
+    margin: 30px auto;
+    font-size: 18px;
+}
+#list ol {
+  margin-top: 30px;
+}
+#list ol li {
+    margin: 10px 0px;
+}
+
+#social {
+    font-size: 18px;
+    line-height: 60px;
+    padding: 20px 0px 20px;
+}
+
+#social li i {
+    font-size: 40px;
+    vertical-align: bottom;
+}
+
+.title {
+    text-align: center;
+}
+
+.help-campo {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    font-size: 35px;
+    z-index: 9999;
+}

@@ -1,0 +1,47 @@
+<ion-view>
+    <ion-slide-box on-slide-changed="slideChanged(index)">
+        <ion-slide>
+            <h3>Obrigado por escolher o WarningBox!</h3>
+            <div id="logo">
+                <img src="img/logo.png" height="150" width="150"></img>
+            </div>
+            <p></p>
+            <p>O seu aplicativo de controle de validade.</p>
+        </ion-slide>
+        <ion-slide>
+            <h3>Usar o WarningBox é simples!</h3>
+            
+            <div id="list">
+              <h5>São apenas três passos:</h5>
+              <ol>
+                <li>1. Cadastre o estabelecimento</li>
+                <li>2. Capture a foto do produto</li>
+                <li>3. Cadastre a data de vencimento</li>
+              </ol>
+            </div>
+            <p>Pronto!</p>
+            <p>O WarningBox avisará em 45, 30, 15 e 03 dias antes do vencimento.</p>
+        </ion-slide>
+        <ion-slide>
+            <h3>Ajuda</h3>
+            <p>Em caso de dúvidas, problemas ou sugestões entre em contato conosco:</p>
+            <ol id="social">
+                <li>
+                    <i class="icon ion-social-skype calm"></i>
+                    {{contatos.skype}}    
+                </li>
+                <li>
+                    <i class="icon ion-social-whatsapp balanced"></i>
+                    {{contatos.whatsapp}}
+                </li>
+                <li>
+                    <i class="icon ion-android-mail energized"></i>
+                    {{contatos.mail}}
+                </li>
+            </ol>
+            <div class="text-center">
+                <h5>Versão: {{versao}}</h5>
+            </div>
+        </ion-slide>
+    </ion-slide-box>
+</ion-view>
