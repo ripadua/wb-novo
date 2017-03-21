@@ -1,5 +1,12 @@
 <ion-view title="Produto">
- <ion-content class="padding">
- <h1>Produto</h1>
- </ion-content>
+   <ion-content class="padding">
+   
+   <div class="list">
+     <a class="item item-thumbnail-left" ng-click="abrirProduto(produto)" ng-repeat="produto in produtos">
+      <img ng-src="data:image/jpeg;base64,{{produto.imagem}}">
+      <h2>Data de Validade:</h2>
+      <p>{{produto.data_vencimento | date: 'dd/MM/yyyy'}}</p>
+    </a>
+   </div>
+   </ion-content>
 </ion-view>

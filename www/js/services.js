@@ -42,6 +42,22 @@ angular.module('warningbox.services', [])
     
 })
 
+.service('ParametroService', function($http, WB_CONFIG){
+  
+  this.consultarParametroPorNome = function(nome) {
+    return $http.get(WB_CONFIG.SERVIDOR + "/consultarParametroPorNome?nome=" + nome);  
+  };
+    
+})
+
+.service('EstabelecimentoService', function($http, WB_CONFIG){
+  
+  this.consultarEstabelecimentosPorUsuario = function(email) {
+    return $http.get(WB_CONFIG.SERVIDOR + "/consultarEstabelecimentosPorUsuario?usuario=" + email);  
+  };
+    
+})
+
 .service('UsuarioService', function($http, WB_CONFIG){
     
     this.consultarUsuarioPorEmail = function(email) {

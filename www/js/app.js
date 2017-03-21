@@ -91,7 +91,8 @@ angular.module('warningbox', ['ionic', 'warningbox.controllers', 'warningbox.ser
   .state('logado', {
     url: '/logado',
     abstract: true,
-    templateUrl: 'templates/abas.html'
+    templateUrl: 'templates/abas.html',
+    controller: 'AbasCtrl'
   })
   
   .state('logado.alerta', {
@@ -101,6 +102,9 @@ angular.module('warningbox', ['ionic', 'warningbox.controllers', 'warningbox.ser
         templateUrl: 'templates/alerta.html',
         controller: 'AlertaCtrl'
       }
+    },
+    data: {
+      nome: 'Alertas'
     }
   })
   
@@ -111,6 +115,9 @@ angular.module('warningbox', ['ionic', 'warningbox.controllers', 'warningbox.ser
         templateUrl: 'templates/produto.html',
         controller: 'ProdutoCtrl'
       }
+    },
+    data: {
+      nome: 'Produtos'
     }
   })
   
@@ -121,6 +128,9 @@ angular.module('warningbox', ['ionic', 'warningbox.controllers', 'warningbox.ser
         templateUrl: 'templates/camera.html',
         controller: 'CameraCtrl'
       }
+    },
+    data: {
+      nome: 'Cadastro de Produto'
     }
   })
   
@@ -131,6 +141,9 @@ angular.module('warningbox', ['ionic', 'warningbox.controllers', 'warningbox.ser
         templateUrl: 'templates/perfil.html',
         controller: 'PerfilCtrl'
       }
+    },
+    data: {
+      nome: 'Perfil'
     }
   })
   
@@ -141,6 +154,9 @@ angular.module('warningbox', ['ionic', 'warningbox.controllers', 'warningbox.ser
         templateUrl: 'templates/relatorio.html',
         controller: 'RelatorioCtrl'
       }
+    },
+    data: {
+      nome: 'Relatório'
     }
   });
   

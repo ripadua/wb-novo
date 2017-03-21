@@ -1,12 +1,15 @@
 angular.module('warningbox.controllers', [])
 
-.controller('AppCtrl', function($rootScope, $scope, $timeout, $localStorage, VersaoService, $state) {
+.controller('AppCtrl', function($rootScope, $scope, $timeout, $localStorage, VersaoService, ParametroService, EstabelecimentoService, $state) {
 
   $scope.stateAnterior = "";
   
   //Cria o objeto wb no localStorage caso não exista
   if (!$localStorage.wb) {
     $localStorage.wb = {};
+    $localStorage.wb.produtos = [];
+    $localStorage.wb.estabelecimentos = [];
+    $localStorage.wb.categorias = [];
   }
   
   //Verifica se o usuário clicou em um alerta. Se tiver clicado o sistema vai 
@@ -18,7 +21,17 @@ angular.module('warningbox.controllers', [])
       $rootScope.visualizaAlertas = false;
   }
   
-  VersaoService.isVersaoValida();
+  //VersaoService.isVersaoValida();
+  
+  ParametroService.consultarParametroPorNome('categorias').then(function(response){
+    $localStorage.wb.categorias = response.data.valor.split(',');
+  });
+  
+  if ($localStorage.wb.usuario) {
+    EstabelecimentoService.consultarEstabelecimentosPorUsuario($localStorage.wb.usuario.email).then(function(response){
+      $localStorage.wb.estabelecimentos = response.data;
+    });
+  }
   
   $scope.abrirAjuda = function() {
     $state.go('deslogado.ajuda');
@@ -51,7 +64,7 @@ angular.module('warningbox.controllers', [])
 })
 
 //Controlador da tela de login
-.controller('LoginCtrl', function($rootScope, $scope, $localStorage, $state, $ionicPopup, $ionicLoading, $http, VersaoService, EmailService, UsuarioService) {
+.controller('LoginCtrl', function($rootScope, $scope, $localStorage, $state, $ionicPopup, $ionicLoading, $http, VersaoService, EmailService, UsuarioService, EstabelecimentoService) {
   
   //objeto que armazena as informações de login
   $scope.data = {};
@@ -68,10 +81,10 @@ angular.module('warningbox.controllers', [])
     $ionicLoading.show({});
     
     //Verifica se a versao do aplicativo é valida
-    if (false && !VersaoService.isVersaoValida()) {
-      $ionicLoading.hide();
-      return;
-    }
+    //if (!VersaoService.isVersaoValida()) {
+    //  $ionicLoading.hide();
+    //  return;
+    //}
     
     //Verifica se o usuário informou um email para entrar
     if (formLogin.email.$error.required) {
@@ -120,6 +133,10 @@ angular.module('warningbox.controllers', [])
             console.log(e);
           });
           
+          EstabelecimentoService.consultarEstabelecimentosPorUsuario($scope.data.email).then(function(response){
+            $localStorage.wb.estabelecimentos = response.data;
+          });
+          
           $ionicLoading.hide();
           $state.go('logado.alerta');
             
@@ -127,7 +144,7 @@ angular.module('warningbox.controllers', [])
           $ionicPopup.alert({
             title: 'WarningBox',
             cssClass: 'text-center',
-            template: 'Não foi possível entrar no sistema. Favor confirmar dados da assinatura e forma e pagamento.'
+            template: 'Não foi possível entrar no sistema. Favor confirmar dados da assinatura e forma de pagamento.'
           });
           $ionicLoading.hide();
         } else {
@@ -488,12 +505,92 @@ angular.module('warningbox.controllers', [])
 
 //Controlador da tela de produtos
 .controller('ProdutoCtrl', function($rootScope, $scope, $localStorage, $state, $ionicPopup, $ionicLoading, $http){
+  $scope.produtos = $localStorage.wb.produtos;
   
+  $scope.abrirProduto = function(produto) {
+    $state.go('logado.camera');
+    $rootScope.$broadcast('abrir-camera', produto);
+  };
 })
 
 //Controlador da tela de camera
-.controller('CameraCtrl', function($rootScope, $scope, $localStorage, $state, $ionicPopup, $ionicLoading, $http){
+.controller('CameraCtrl', function($rootScope, $scope, $localStorage, $state, $ionicPopup, $ionicLoading, $http, $cordovaCamera){
   
+  //objeto que receberá os dados do produto
+  $scope.data = {};
+  $scope.categorias = $localStorage.wb.categorias;
+  $scope.estabelecimentos = $localStorage.wb.estabelecimentos;
+  
+  $scope.tirarFoto = function() {
+    
+    var options = {
+      quality: 50,
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: Camera.PictureSourceType.CAMERA,
+      allowEdit: true,
+      encodingType: Camera.EncodingType.JPEG,
+      targetWidth: 300,
+      targetHeight: 300,
+      popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: false,
+	    correctOrientation:true
+    };
+  
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+      var image = document.getElementById('imagem');
+      image.src = "data:image/jpeg;base64," + imageData;
+      $scope.data.imagem = imageData;
+    }, function(err) {
+      // error
+    });
+  };
+  
+  $scope.salvar = function() {
+    $ionicLoading.show();
+    
+    $localStorage.wb.produtos.push($scope.data);
+    $scope.data = {};
+    $scope.data.data_vencimento = new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000);
+    
+    $ionicPopup.alert({
+        title: 'WarningBox',
+        cssClass: 'text-center',
+        template: 'O produto foi cadastrado com sucesso.'
+    });
+      
+    $ionicLoading.hide();
+    $state.go('logado.produto');
+  };
+  
+  $scope.apresentaCampoCategoria = function() {
+    return $localStorage.wb.usuario.categoria;
+  };
+  
+  $scope.apresentaCampoCodigoBarras = function() {
+    return $localStorage.wb.usuario.codigo_de_barras;
+  };
+  
+  $scope.apresentaCampoQuantidade = function() {
+    return $localStorage.wb.usuario.quantidade;
+  };
+  
+  $scope.apresentaCampoValor = function() {
+    return $localStorage.wb.usuario.valor;
+  };
+  
+  $scope.$on('abrir-camera', function(event, produto){
+    
+    if (produto) {
+      $scope.data = produto;
+      var image = document.getElementById('imagem');
+      image.src = "data:image/jpeg;base64," + produto.imagem;
+    } else {
+      $scope.data = {};
+      var image = document.getElementById('imagem');
+      image.src = "../img/placeholder.png";
+      $scope.data.data_vencimento = new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000);
+    }
+  });
 })
 
 //Controlador da tela de perfil
@@ -503,6 +600,18 @@ angular.module('warningbox.controllers', [])
 
 //Controlador da tela de relatorio
 .controller('RelatorioCtrl', function($rootScope, $scope, $localStorage, $state, $ionicPopup, $ionicLoading, $http){
-  
-});
 
+})
+
+//Controlador das abas
+.controller('AbasCtrl', function($rootScope, $scope, $localStorage, $state, $ionicPopup, $ionicLoading, $http){
+  
+  $scope.obterNomeTela = function() {
+    return $state.current.data.nome;  
+  };
+  
+  $scope.abrirCadastroProduto = function() {
+    $state.go('logado.camera');
+    $rootScope.$broadcast('abrir-camera');
+  };
+});

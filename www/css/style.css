@@ -54,3 +54,19 @@
     font-size: 35px;
     z-index: 9999;
 }
+
+.select-campo {
+    height: 74px;
+    display: block;
+}
+
+.select-campo > span {
+    opacity: 1 !important;
+    top: 0px !important;
+}
+
+.select-campo > select {
+    height: 40px !important;
+    max-width: 100% !important;
+    top: 30px !important;
+}
