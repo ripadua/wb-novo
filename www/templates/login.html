@@ -1,23 +1,25 @@
 <ion-view view-title="Login">
   <ion-content class="padding">
-      <div class="list list-inset">
-          <div class="item text-center">
+      <div class="list">
+          <br>
+          <div class="text-center">
             <img src="img/logo.png" height="75" width="75"></img>
           </div>
+          <br>
           <form name="formEmail" novalidate>
             <label class="item item-input">
               <input type="email" placeholder="Informe o seu e-mail" ng-model="data.email" ng-required="true" name="email">
             </label>
             <span class="item item-input">
               <input type="password" placeholder="Informe a senha" ng-model="data.senha" ng-required="true" name="senha">
-              <button class="button button-icon icon ion-ios-help-empty help-campo positive" 
+              <button class="button button-icon icon ion-ios-help-empty help-campo positive"
                   ng-click="abrirRecuperaSenha()" type="button"></button>
             </span>
           </form>
       </div>
       <button class="button button-block button-positive" ng-click="entrar(formEmail)">Entrar</button>
       <button class="button button-block button-clear button-dark" ng-click="abrirCadastro()">Cadastre-se</button>
-      <button class="button button-block button-clear button-dark" ng-click="abrirInformaCodigo()" 
+      <button class="button button-block button-clear button-dark" ng-click="abrirInformaCodigo()"
           ng-if="possuiCodigoRecuperacaoSenha()">Informe o código de recuperação</button>
   </ion-content>
 </ion-view>
