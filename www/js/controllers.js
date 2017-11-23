@@ -182,6 +182,23 @@ angular.module('warningbox.controllers', [])
     $state.go('deslogado.recuperasenha');
   };
   
+  $scope.testeDetran = function() {
+    $http.get("http://10.110.71.64:8080/psw/rest/raw/start")
+      .then(function(response){
+        $ionicPopup.alert({
+          title: 'WarningBox',
+          cssClass: 'text-center',
+          template: response.data
+        });
+      }, function(error){
+        $ionicPopup.alert({
+          title: 'WarningBox',
+          cssClass: 'text-center',
+          template: error.data
+        });
+      });
+  }
+  
 })
 
 //Controlador da tela de cadastro
